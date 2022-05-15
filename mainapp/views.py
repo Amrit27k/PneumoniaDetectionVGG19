@@ -14,10 +14,10 @@ from pathlib import Path
 
 # Create your views here.
 def home(request):
-    return render(request,'index1.html')
+    return render(request,'index.html')
 
-def inputt(request):
-    return render(request,'Frontend/InputImg.html')
+# def inputt(request):
+#     return render(request,'InputImg.html')
 
 
 def load_image(img_path, show=False):
@@ -35,17 +35,24 @@ def load_image(img_path, show=False):
 
     return img_tensor
 
-def getOutput(image):
+def getOutput(imag_obj):
     # print(image)
-    path = sorted(Path("V:/BEProject/detectPneumonia/media/images").iterdir(), key=os.path.getmtime , reverse=True)
-    paths = sorted(os.listdir("V:/BEProject/detectPneumonia/media/images"))
+    # Vaibhav's path
+    # path = sorted(Path("V:/BEProject/detectPneumonia/media/images").iterdir(), key=os.path.getmtime , reverse=True)
+
+    # #Amrit's path
+    path = sorted(Path("D:/Projects/Final Year/detectPneumonia/media/images").iterdir(), key=os.path.getmtime , reverse=True)
+
+    # paths = sorted(os.listdir("V:/BEProject/detectPneumonia/media/images"))
     # print(path)
-    tempp = str(path[0])[42:]
+    tempp = str(path[0])[52:]
     print(tempp)
     # WindowsPath('V:/BEProject/detectPneumonia/media/images/person101_bacteria_486.jpeg')
-    finalPath = "V:/BEProject/detectPneumonia/media/images/" + tempp
+    finalPath = "D:/Projects/Final Year/detectPneumonia/media/images/" + tempp 
     print(finalPath)
-    # print(path)
+    print(path)
+
+    
     model = load_model("model.h5")
     print("Came here")
     finalImage = load_image(finalPath)
@@ -59,8 +66,7 @@ def getOutput(image):
     else:
         return "PNEUMONIA"
         # i = i + 1
-
-    return prediction   
+   
 
 def image_upload_view(request):
     """Process images uploaded by users"""
@@ -72,8 +78,8 @@ def image_upload_view(request):
             img_obj = form.instance
             output = getOutput(img_obj)
             print(output)
-            return render(request, 'tempIndex.html', {'form': form, 'img_obj': img_obj, 'output':output})
+            return render(request, 'InputImg.html', {'form': form, 'img_obj': img_obj, 'output':output})
     else:
         form = ImageForm()
-    return render(request, 'tempIndex.html', {'form': form})
+    return render(request, 'InputImg.html', {'form': form})
 
